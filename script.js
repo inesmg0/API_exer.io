@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Verificar se data.objectIDs está definido e não é nulo
                 if (data.objectIDs && Array.isArray(data.objectIDs)) {
                     // Limitar a 100 resultados
-                    const objectIDs = data.objectIDs.slice(0, 400);
+                    const objectIDs = data.objectIDs.slice(0, 150);
                     const filteredObjectIDs = data.objectIDs.filter(objectID => {
                     });
                     // Chame a função para exibir os resultados
