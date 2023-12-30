@@ -4,10 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const filtrarCat = document.getElementById('filtrarCat');
 
     // Função para fazer a solicitação à API
-    function fetchArtApiData() {
-        // Obtém o valor do campo de entrada com id 'Pesquisa'
+    function fetchArtApiData(searchByCategory = false) {
         const searchInput = Pesquisa.value;
-        // Obtém o valor da categoria selecionada
         const category = filtrarCat.value;
 
         // URL base da API
@@ -19,12 +17,11 @@ document.addEventListener('DOMContentLoaded', function () {
             category: category,
         });
 
-        // Construa a URL final
+        //string final
         const url = `${apiUrl}?${params.toString}`;
 
         console.log('URL da API:', url);
 
-        // Use fetch para obter os dados da API
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -34,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data.objectIDs && Array.isArray(data.objectIDs)) {
                     // Limitar a 100 resultados
                     const objectIDs = data.objectIDs.slice(0, 150);
-                    // Chame a função para exibir os resultados
+                    // Exibir resultados
                     fetchObjectsDetails(objectIDs);
                 } else {
                     console.error('Não há IDs de objeto suficientes na resposta da API.');
@@ -45,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Função para buscar detalhes dos objetos usando IDs
+    // Função para buscar detalhes
     function fetchObjectsDetails(objectIDs) {
         const promises = objectIDs.map(objectID => {
             const apiUrl = `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`;
@@ -70,12 +67,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const resultItem = document.createElement('div');
             resultItem.classList.add('grid-item');
 
-            // Adapta esta lógica para a estrutura real dos dados da API
             const title = result.title || 'Sem título';
             const img = result.primaryImage;
             const pais = result.country;
 
-            // Cria o conteúdo do item de resultado
+
             const itemContent = `
                 <img src="${img}" alt="${title}">
                 <h3>${title}</h3>
@@ -88,22 +84,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     Pesquisa.addEventListener('input', function () {
-        // Limpa os resultados anteriores
         resultsContainer.innerHTML = '';
-
-        // Realiza a pesquisa com o novo termo
         fetchArtApiData();
     });
 
-    // Adiciona um evento de escuta ao campo de seleção 'filtrarCat' para acionar a pesquisa quando a categoria mudar
     filtrarCat.addEventListener('change', function () {
-        // Limpa os resultados anteriores
         resultsContainer.innerHTML = '';
-
-        // Realiza a pesquisa com a nova categoria
-        fetchArtApiData();
+        fetchArtApiData(true); // Passa true para indicar pesquisa por categoria
     });
 
-    // Chamada inicial para buscar os resultados
     fetchArtApiData();
 });
