@@ -27,15 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Verificar se data.objectIDs está definido e não é nulo
                 if (data.objectIDs && Array.isArray(data.objectIDs)) {
                     const filteredObjectIDs = data.objectIDs.filter(objectID => {
+                        // Aqui você pode aplicar lógica de filtro, se necessário
+                        return true;
                     });
+
                     // Chame a função para exibir os resultados
-                    fetchObjectsDetails(objectIDs);
+                    fetchObjectsDetails(filteredObjectIDs);
                 } else {
                     console.error('Não há IDs de objeto suficientes na resposta da API.');
                 }
-            })
-            .catch(error => {
-                console.error('Erro ao buscar dados da API:', error);
             });
     }
 
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Adapta esta lógica para a estrutura real dos dados da API
             const title = result.title || 'Sem título';
             const img = result.primaryImage;
-            const id =result.objectID;
+            const id = result.objectID;
             const pais = result.country;
 
             // Cria o conteúdo do item de resultado
